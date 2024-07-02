@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jun 20 13:06:46 2024
+
+@author: Carlos Arroyo
+"""
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f6;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+.sidebar .sidebar-content {
+    background-color: #4b9cd3;
+    color: white;
+}
+
+.css-1v3fvcr {
+    background-color: #4b9cd3;
+    color: white;
+}
+
+.css-qrbaxs {
+    color: white;
+}
+
+.css-1d391kg, .css-145kmo2 {
+    font-family: 'Arial', sans-serif;
+}
+
+.css-1aumxhk {
+    background-color: #ffffff;
+    border: 1px solid #e6e6e6;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
