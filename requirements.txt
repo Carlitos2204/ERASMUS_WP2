@@ -2,3 +2,6 @@ streamlit
 pandas
 plotly
 openpyxl
+plotly.express
+io
+streamlit.components.v1
