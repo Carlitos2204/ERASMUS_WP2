@@ -86,8 +86,9 @@ universidades = st.sidebar.multiselect(
     options=data_filtered_by_pais['Universidad'].unique(),
     default=data_filtered_by_pais['Universidad'].unique()
 )
-# Búsqueda de palabras clave
-keyword = st.sidebar.text_input("Buscar por palabra clave")
+
+# Aplicar filtros de universidad
+data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Sección de filtros
 st.sidebar.header("Filtre por sección de preguntas")
@@ -104,6 +105,8 @@ sections = st.sidebar.selectbox(
      "SECCIÓN VI: Caracterización del Staff encargado de la promoción de carreras STEM",
      "SECCIÓN VII: Preguntas de Cierre"]
 )
+# Búsqueda de palabras clave
+keyword = st.sidebar.text_input("Buscar por palabra clave")
 
 # Mapear secciones a preguntas
 sections_questions = {
@@ -121,22 +124,19 @@ sections_questions = {
 
 # Filtrar datos según la sección seleccionada
 if sections == "Todas las preguntas":
-    data_filtered = data.copy()
+    data_section_filtered = data_filtered.copy()
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
     filtered_columns = [col for col in data.columns if any(col.startswith(q) for q in questions_columns)]
-    data_filtered = data[[ 'País','Universidad', 'Correo electrónico institucional del socio responsable'] + filtered_columns ]
-
-# Aplicar filtros de universidad
-data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
+    data_section_filtered = data_filtered[ ['País','Universidad','Correo electrónico institucional del socio responsable' ]+ filtered_columns ]
 
 # Filtrar por palabra clave en columnas y filas
 if keyword:
-    matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
-    data_filtered = data_filtered[[ 'País','Universidad', 'Correo electrónico institucional del socio responsable']+matching_columns]
-    mask = data_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
-    data_filtered = data_filtered[mask]
+    matching_columns = [col for col in data_section_filtered.columns if keyword.lower() in col.lower()]
+    mask = data_section_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
+    data_section_filtered = data_section_filtered['País','Universidad','Correo electrónico institucional del socio responsable' ]+[matching_columns ]
+    data_section_filtered = data_section_filtered[mask]
 
 # Reducir el tamaño de la letra en la visualización de los datos filtrados
 st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow_html=True)
