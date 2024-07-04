@@ -133,7 +133,7 @@ else:
 
 # Filtrar por palabra clave en columnas y filas
 if keyword:
-    matching_columns = [col for col in data_filtered1.columns if keyword.lower() in col.lower()]
+    matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
     data_filtered = data[['Universidad']+ matching_columns ]
 
 
