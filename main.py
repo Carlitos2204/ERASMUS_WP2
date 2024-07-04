@@ -134,7 +134,7 @@ data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 # Filtrar por palabra clave en columnas y filas
 if keyword:
     matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
-    data_filtered = data_filtered[matching_columns + ['Universidad']]
+    data_filtered = data_filtered[[ 'País','Universidad', 'Correo electrónico institucional del socio responsable']+matching_columns]
     mask = data_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
     data_filtered = data_filtered[mask]
 
