@@ -32,7 +32,7 @@ data = data[data.iloc[:, 1] == 'Sí, estoy de acuerdo']
 
 # Columnas que se intentarán eliminar si existen
 columns_to_drop = [
-    
+    'Marca temporal', 
     'Antes de comenzar la encuesta, es importante informarle que los datos proporcionados serán tratados de forma confidencial y utilizados únicamente para los fines del proyecto ELA4ATTRACT ¿Está de acuerdo con el tratamiento de sus datos para este propósito?',
     'Nombre completo de quién coordina el diligenciamiento de la encuesta',
     'Correo electrónico institucional'
@@ -44,13 +44,26 @@ data.drop(columns=[col for col in columns_to_drop if col in data.columns], inpla
 # Limpiar datos de universidades
 data['Universidad'] = data['Universidad'].str.replace(r'\\n', ' ', regex=True)
 
+
+
+# Convertir la columna de enlaces a hipervínculos
 # Función para crear enlaces
 def create_hyperlink(url):
     return f'<a href="{url}" target="_blank">Documento</a>'
 
-# Convertir la columna de enlaces a hipervínculos
-if 'Enlace a los documentos' in data.columns:
-    data['Documentos'] = data['Enlace a los documentos'].apply(lambda x: create_hyperlink(x) if pd.notnull(x) else 'No disponible')
+# Convertir columnas de enlaces a hipervínculos
+link_columns = [
+    'Si es posible adjunte en un archivo Word o Excel las tablas con los datos proporcionados en la PARTE I.II (cada pregunta); esto con el fin de tener los datos de manera ordenada.',
+    'POR FAVOR ADJUNTE AQUI LOS REPORTES UTILIZADOS PARA RESPONDER LA SECCIÓN I (EN PDF)',
+    'Por favor, proporciona el recurso multimedia (infografía, video o podcast) correspondiente a la pregunta 12 aquí',
+    'Por favor, proporciona el recurso multimedia (infografía, video o podcast) correspondiente a la pregunta 15 aquí',
+    'Por favor, proporciona el recurso multimedia (infografía, video o podcast) correspondiente a la pregunta 17 aquí',
+    'Por favor, proporciona el recurso multimedia (infografía, video o podcast) correspondiente a la pregunta 22 aquí'
+]
+
+for col in link_columns:
+    if col in data.columns:
+        data[col] = data[col].apply(lambda x: create_hyperlink(x) if pd.notnull(x) else 'No disponible')
 
 # Barra lateral para filtros y búsqueda de palabras clave
 st.sidebar.header("Filtros")
@@ -61,18 +74,20 @@ if st.sidebar.button("Restablecer Filtros"):
 
 # Filtro de países
 paises = st.sidebar.multiselect(
-    "Seleccione el país",
+    "Seleccione Países",
     options=data['País'].unique(),
     default=data['País'].unique()
 )
 
-# Filtro de universidades
-universidades = st.sidebar.multiselect(
-    "Seleccione la universidad",
-    options=data['Universidad'].unique(),
-    default=data['Universidad'].unique()
-)
+# Filtrar datos por país primero
+data_filtered_by_pais = data[data['País'].isin(paises)]
 
+# Filtro de universidades basado en los países seleccionados
+universidades = st.sidebar.multiselect(
+    "Seleccione Universidades",
+    options=data_filtered_by_pais['Universidad'].unique(),
+    default=data_filtered_by_pais['Universidad'].unique()
+)
 # Búsqueda de palabras clave
 keyword = st.sidebar.text_input("Buscar por palabra clave")
 
@@ -113,16 +128,15 @@ else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
     filtered_columns = [col for col in data.columns if any(col.startswith(q) for q in questions_columns)]
-    data_filtered = data[filtered_columns + ['Universidad', 'País']]
+    data_filtered = data[['Universidad', 'País'] + filtered_columns ]
 
-# Aplicar filtros de país y universidad
-data_filtered = data_filtered[data_filtered['País'].isin(paises)]
+# Aplicar filtros de universidad
 data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Filtrar columnas por palabra clave
 if keyword:
     matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
-    data_filtered = data_filtered[matching_columns + ['Universidad']]
+    data_filtered = data_filtered[['Universidad', 'País']+ matching_columns ]
 
 # Reducir el tamaño de la letra en la visualización de los datos filtrados
 st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow_html=True)
