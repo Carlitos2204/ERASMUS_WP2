@@ -88,7 +88,7 @@ universidades = st.sidebar.multiselect(
 )
 
 # Aplicar filtros de universidad
-data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
+data_filtered1= data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Sección de filtros
 st.sidebar.header("Filtre por sección de preguntas")
@@ -124,7 +124,7 @@ sections_questions = {
 
 # Filtrar datos según la sección seleccionada
 if sections == "Todas las preguntas":
-    data_section_filtered = data_filtered.copy()
+    data_filtered = data_filtered1.copy()
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
