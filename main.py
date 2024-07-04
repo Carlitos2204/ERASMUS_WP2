@@ -87,9 +87,6 @@ universidades = st.sidebar.multiselect(
     default=data_filtered_by_pais['Universidad'].unique()
 )
 
-# Aplicar filtros de universidad
-data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
-
 # Sección de filtros
 st.sidebar.header("Filtre por sección de preguntas")
 sections = st.sidebar.selectbox(
@@ -121,6 +118,8 @@ sections_questions = {
     "SECCIÓN VI: Caracterización del Staff encargado de la promoción de carreras STEM": list(range(33, 40)),
     "SECCIÓN VII: Preguntas de Cierre": list(range(40, 42))
 }
+# Aplicar filtros de universidad
+data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Filtrar datos según la sección seleccionada
 if sections == "Todas las preguntas":
