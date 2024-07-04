@@ -128,14 +128,13 @@ if sections == "Todas las preguntas":
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
-    filtered_columns = [col for col in data.columns if any(col.startswith(q) for q in questions_columns)]
+    filtered_columns = [col for col in data_filtered1.columns if any(col.startswith(q) for q in questions_columns)]
     data_filtered = data[['Universidad']+filtered_columns ]
 
 # Filtrar por palabra clave en columnas y filas
 if keyword:
     matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
-    mask = data_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
-    data_section_filtered = data_filtered.loc[['Universidad']+ matching_columns ]
+    data_filtered = data_filtered1[matching_columns + ['Universidad']]
 
 
 # Reducir el tamaño de la letra en la visualización de los datos filtrados
