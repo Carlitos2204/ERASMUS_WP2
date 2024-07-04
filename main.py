@@ -123,7 +123,7 @@ data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Filtrar datos según la sección seleccionada
 if sections == "Todas las preguntas":
-    data_section_filtered = data_filtered.copy()
+    data_section_filtered = data_filtered_by_pais.copy()
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
