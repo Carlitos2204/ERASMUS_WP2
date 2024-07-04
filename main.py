@@ -135,7 +135,7 @@ else:
 if keyword:
     matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
     mask = data_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
-    data_section_filtered = data_filtered.loc[['Universidad']+ mask, matching_columns ]
+    data_section_filtered = data_filtered.loc[['Universidad']+ matching_columns ]
 
 
 # Reducir el tamaño de la letra en la visualización de los datos filtrados
