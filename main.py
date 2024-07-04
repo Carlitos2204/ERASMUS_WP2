@@ -70,22 +70,18 @@ st.sidebar.header("Filtros")
 if st.sidebar.button("Restablecer Filtros"):
     st.experimental_rerun()
 
-# Filtro de países
-paises = st.sidebar.multiselect(
-    "Seleccione Países",
-    options=data['País'].unique(),
-    default=data['País'].unique()
-)
-
 # Filtrar datos por país primero
-data_filtered_by_pais = data[data['País'].isin(paises)]
+data_filtered = data[data['País'].isin(paises)]
 
 # Filtro de universidades basado en los países seleccionados
 universidades = st.sidebar.multiselect(
     "Seleccione Universidades",
-    options=data_filtered_by_pais['Universidad'].unique(),
-    default=data_filtered_by_pais['Universidad'].unique()
+    options=data_filtered['Universidad'].unique(),
+    default=data_filtered['Universidad'].unique()
 )
+
+# Aplicar filtros de universidad
+data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Sección de filtros
 st.sidebar.header("Filtre por sección de preguntas")
@@ -118,12 +114,10 @@ sections_questions = {
     "SECCIÓN VI: Caracterización del Staff encargado de la promoción de carreras STEM": list(range(33, 40)),
     "SECCIÓN VII: Preguntas de Cierre": list(range(40, 42))
 }
-# Aplicar filtros de universidad
-data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 
 # Filtrar datos según la sección seleccionada
 if sections == "Todas las preguntas":
-    data_section_filtered = data_filtered_by_pais.copy()
+    data_section_filtered =data_filtered.copy()
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
