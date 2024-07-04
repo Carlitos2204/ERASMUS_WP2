@@ -32,7 +32,6 @@ data = data[data.iloc[:, 1] == 'Sí, estoy de acuerdo']
 
 # Columnas que se intentarán eliminar si existen
 columns_to_drop = [
-    'Marca temporal', 
     'Antes de comenzar la encuesta, es importante informarle que los datos proporcionados serán tratados de forma confidencial y utilizados únicamente para los fines del proyecto ELA4ATTRACT ¿Está de acuerdo con el tratamiento de sus datos para este propósito?',
     'Nombre completo de quién coordina el diligenciamiento de la encuesta',
     'Correo electrónico institucional'
