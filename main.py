@@ -134,7 +134,7 @@ else:
 # Filtrar por palabra clave en columnas y filas
 if keyword:
     matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
-    mask = data_section_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
+    mask = data_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
     data_section_filtered = data_filtered.loc[mask, matching_columns + ['Universidad']]
 
 
