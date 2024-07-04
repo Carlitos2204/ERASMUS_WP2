@@ -70,6 +70,13 @@ st.sidebar.header("Filtros")
 if st.sidebar.button("Restablecer Filtros"):
     st.experimental_rerun()
 
+# Filtro de países
+paises = st.sidebar.multiselect(
+    "Seleccione Países",
+    options=data['País'].unique(),
+    default=data['País'].unique()
+)
+
 # Filtrar datos por país primero
 data_filtered = data[data['País'].isin(paises)]
 
