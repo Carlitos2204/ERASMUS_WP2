@@ -34,8 +34,6 @@ data = data[data.iloc[:, 1] == 'Sí, estoy de acuerdo']
 columns_to_drop = [
     'Marca temporal', 
     'Antes de comenzar la encuesta, es importante informarle que los datos proporcionados serán tratados de forma confidencial y utilizados únicamente para los fines del proyecto ELA4ATTRACT ¿Está de acuerdo con el tratamiento de sus datos para este propósito?',
-    'Nombre completo de quién coordina el diligenciamiento de la encuesta',
-    'Correo electrónico institucional'
 ]
 
 # Eliminar columnas no deseadas solo si existen
@@ -128,7 +126,7 @@ else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
     filtered_columns = [col for col in data.columns if any(col.startswith(q) for q in questions_columns)]
-    data_filtered = data[['Universidad', 'País'] + filtered_columns ]
+    data_filtered = data[[ 'País','Universidad', 'Correo electrónico institucional del socio responsable'] + filtered_columns ]
 
 # Aplicar filtros de universidad
 data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
@@ -136,7 +134,7 @@ data_filtered = data_filtered[data_filtered['Universidad'].isin(universidades)]
 # Filtrar columnas por palabra clave
 if keyword:
     matching_columns = [col for col in data_filtered.columns if keyword.lower() in col.lower()]
-    data_filtered = data_filtered[['Universidad', 'País']+ matching_columns ]
+    data_filtered = data_filtered[['País','Universidad', 'Correo electrónico institucional del socio responsable']+ matching_columns ]
 
 # Reducir el tamaño de la letra en la visualización de los datos filtrados
 st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow_html=True)
