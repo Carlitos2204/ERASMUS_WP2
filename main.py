@@ -124,19 +124,18 @@ sections_questions = {
 
 # Filtrar datos según la sección seleccionada
 if sections == "Todas las preguntas":
-    data_section_filtered =data_filtered.copy()
+    data_section_filtered = data_filtered.copy()
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
     filtered_columns = [col for col in data.columns if any(col.startswith(q) for q in questions_columns)]
-    data_section_filtered = data_filtered[ ['País','Universidad','Correo electrónico institucional del socio responsable' ]+ filtered_columns ]
+    data_section_filtered = data_filtered[filtered_columns + ['Universidad', 'País']]
 
 # Filtrar por palabra clave en columnas y filas
 if keyword:
     matching_columns = [col for col in data_section_filtered.columns if keyword.lower() in col.lower()]
     mask = data_section_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
-    data_section_filtered = data_section_filtered['País','Universidad','Correo electrónico institucional del socio responsable' ]+[matching_columns ]
-    data_section_filtered = data_section_filtered[mask]
+    data_section_filtered = data_section_filtered.loc[mask, matching_columns + ['Universidad']]
 
 # Reducir el tamaño de la letra en la visualización de los datos filtrados
 st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow_html=True)
