@@ -128,8 +128,8 @@ if sections == "Todas las preguntas":
 else:
     questions_range = sections_questions[sections]
     questions_columns = [f"{i}-" for i in questions_range]
-    filtered_columns = [col for col in data_filtered1.columns if any(col.startswith(q) for q in questions_columns)]
-    data_filtered = data[['Universidad']+filtered_columns ]
+    filtered_columns = [col for col in data_filtered.columns if any(col.startswith(q) for q in questions_columns)]
+    data_filtered = data_filtered1[['Universidad']+filtered_columns ]
 
 # Filtrar por palabra clave en columnas y filas
 if keyword:
