@@ -162,11 +162,6 @@ st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow
 st.write(data_filtered.to_html(escape=False, index=False), unsafe_allow_html=True)
 
 # Mostrar datos filtrados con opción de expandir cada respuesta
-st.subheader("Datos Filtrados")
-for index, row in data_section_filtered.iterrows():
-    with st.expander(f"Respuesta {index + 1}"):
-        st.markdown(row.to_frame().transpose().to_html(escape=False, index=False), unsafe_allow_html=True, class_='filtered-data')
-
 # Botón para revisar buenas prácticas
 if st.button("Revisar Buenas Prácticas"):
     st.subheader("Buenas Prácticas")
