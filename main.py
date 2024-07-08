@@ -68,14 +68,6 @@ for col in link_columns:
 # Barra lateral para filtros y búsqueda de palabras clave
 st.sidebar.header("Filtros")
 
-
-# Botón en la barra lateral para revisar buenas prácticas
-if st.sidebar.button("Revisar Buenas Prácticas"):
-    st.session_state.show_buenas_practicas = True
-else:
-    if 'show_buenas_practicas' not in st.session_state:
-        st.session_state.show_buenas_practicas = False
-
 # Función para restablecer filtros
 def reset_filters():
     st.session_state['paises'] = data['País'].unique().tolist()
