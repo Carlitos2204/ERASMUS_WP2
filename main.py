@@ -66,9 +66,16 @@ for col in link_columns:
 # Barra lateral para filtros y búsqueda de palabras clave
 st.sidebar.header("Filtros")
 
-# Botón para restablecer filtros
-if st.sidebar.button("Restablecer Filtros"):
-    st.experimental_rerun()
+  # Función para restablecer filtros
+    def reset_filters():
+        st.session_state['paises'] = data['País'].unique().tolist()
+        st.session_state['universidades'] = data['Universidad'].unique().tolist()
+        st.session_state['keyword'] = ''
+        st.session_state['sections'] = 'Todas las preguntas'
+
+    # Botón para restablecer filtros
+    if st.sidebar.button("Restablecer Filtros", on_click=reset_filters):
+        st.experimental_rerun()
 
 # Filtro de países
 paises = st.sidebar.multiselect(
