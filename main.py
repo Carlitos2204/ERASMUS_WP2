@@ -167,8 +167,8 @@ for index, row in data_section_filtered.iterrows():
     with st.expander(f"Respuesta {index + 1}"):
         st.markdown(row.to_frame().transpose().to_html(escape=False, index=False), unsafe_allow_html=True, class_='filtered-data')
 
-# Mostrar Buenas Prácticas si el botón fue clicado
-if st.session_state.show_buenas_practicas:
+# Botón para revisar buenas prácticas
+if st.button("Revisar Buenas Prácticas"):
     st.subheader("Buenas Prácticas")
     
     # Aplicar filtros de país y universidad a los datos de buenas prácticas
