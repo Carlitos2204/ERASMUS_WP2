@@ -46,7 +46,6 @@ data.drop(columns=[col for col in columns_to_drop if col in data.columns], inpla
 data['Universidad'] = data['Universidad'].str.replace(r'\\n', ' ', regex=True)
 
 
-
 # Convertir la columna de enlaces a hipervínculos
 # Función para crear enlaces
 def create_hyperlink(url):
@@ -68,6 +67,14 @@ for col in link_columns:
 
 # Barra lateral para filtros y búsqueda de palabras clave
 st.sidebar.header("Filtros")
+
+
+# Botón en la barra lateral para revisar buenas prácticas
+if st.sidebar.button("Revisar Buenas Prácticas"):
+    st.session_state.show_buenas_practicas = True
+else:
+    if 'show_buenas_practicas' not in st.session_state:
+        st.session_state.show_buenas_practicas = False
 
 # Función para restablecer filtros
 def reset_filters():
@@ -154,16 +161,14 @@ st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow
 
 st.write(data_filtered.to_html(escape=False, index=False), unsafe_allow_html=True)
 
-# Crear pestañas
-tab1, tab2 = st.tabs(["Datos Filtrados", "Buenas Prácticas"])
+# Mostrar datos filtrados con opción de expandir cada respuesta
+st.subheader("Datos Filtrados")
+for index, row in data_section_filtered.iterrows():
+    with st.expander(f"Respuesta {index + 1}"):
+        st.markdown(row.to_frame().transpose().to_html(escape=False, index=False), unsafe_allow_html=True, class_='filtered-data')
 
-with tab1:
-    st.subheader("Datos Filtrados")
-    for index, row in data_section_filtered.iterrows():
-        with st.expander(f"Respuesta {index + 1}"):
-            st.markdown(row.to_frame().transpose().to_html(escape=False, index=False), unsafe_allow_html=True, class_='filtered-data')
-
-with tab2:
+# Mostrar Buenas Prácticas si el botón fue clicado
+if st.session_state.show_buenas_practicas:
     st.subheader("Buenas Prácticas")
     
     # Aplicar filtros de país y universidad a los datos de buenas prácticas
@@ -178,7 +183,6 @@ with tab2:
     
     # Mostrar datos de buenas prácticas
     st.dataframe(buenas_practicas_filtered)
-
 
 # Gráficos y visualizaciones
 st.subheader("Visualizaciones")
