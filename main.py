@@ -154,8 +154,16 @@ st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow
 
 st.write(data_filtered.to_html(escape=False, index=False), unsafe_allow_html=True)
 
-# Botón para revisar buenas prácticas
-if st.button("Revisar Buenas Prácticas"):
+# Crear pestañas
+tab1, tab2 = st.tabs(["Datos Filtrados", "Buenas Prácticas"])
+
+with tab1:
+    st.subheader("Datos Filtrados")
+    for index, row in data_section_filtered.iterrows():
+        with st.expander(f"Respuesta {index + 1}"):
+            st.markdown(row.to_frame().transpose().to_html(escape=False, index=False), unsafe_allow_html=True, class_='filtered-data')
+
+with tab2:
     st.subheader("Buenas Prácticas")
     
     # Aplicar filtros de país y universidad a los datos de buenas prácticas
