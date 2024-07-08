@@ -27,6 +27,9 @@ st.title("Proyecto Erasmus - Dashboard de Respuestas de Encuestas LATAM")
 file_path = 'LATAM - Proyecto ELA4ATTRACT(Respuestas).xlsx'
 data = pd.read_excel(file_path)
 
+# Cargar datos de la hoja1 para buenas prácticas
+buenas_practicas_data = pd.read_excel(file_path, sheet_name='Hoja1')
+
 # Filtrar datos relevantes
 data = data[data.iloc[:, 1] == 'Sí, estoy de acuerdo']
 
@@ -150,6 +153,24 @@ st.markdown('<style> .filtered-data { font-size: 12px; } </style>', unsafe_allow
 # Mostrar datos filtrados con opción de expandir cada respuesta
 
 st.write(data_filtered.to_html(escape=False, index=False), unsafe_allow_html=True)
+
+# Botón para revisar buenas prácticas
+if st.button("Revisar Buenas Prácticas"):
+    st.subheader("Buenas Prácticas")
+    
+    # Aplicar filtros de país y universidad a los datos de buenas prácticas
+    buenas_practicas_filtered = buenas_practicas_data[buenas_practicas_data['País'].isin(paises)]
+    buenas_practicas_filtered = buenas_practicas_filtered[buenas_practicas_filtered['Universidad'].isin(universidades)]
+    
+    # Filtrar por palabra clave en columnas y filas
+    if keyword:
+        matching_columns_bp = [col for col in buenas_practicas_filtered.columns if keyword.lower() in col.lower()]
+        mask_bp = buenas_practicas_filtered.apply(lambda row: row.astype(str).str.contains(keyword, case=False).any(), axis=1)
+        buenas_practicas_filtered = buenas_practicas_filtered.loc[mask_bp, matching_columns_bp + ['Universidad']]
+    
+    # Mostrar datos de buenas prácticas
+    st.dataframe(buenas_practicas_filtered)
+
 
 # Gráficos y visualizaciones
 st.subheader("Visualizaciones")
