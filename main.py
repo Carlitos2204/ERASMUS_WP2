@@ -21,7 +21,7 @@ load_css("style.css")
 st.image("ELA4ATTRACT ALT LOGO.png", width=200)
 
 # Título del Dashboard
-st.title("Proyecto Erasmus - Dashboard de Respuestas de Encuestas LATAM")
+st.title("Proyecto Erasmus - Dashboard de Respuestas de Encuestas LA&C")
 
 # Cargar datos
 file_path = 'LATAM - Proyecto ELA4ATTRACT(Respuestas).xlsx'
